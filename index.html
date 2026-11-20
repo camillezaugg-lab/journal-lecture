@@ -327,7 +327,7 @@ body.ro .tg button[data-tip*="PDF"]{border-radius:10px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nTheme"><span data-ic="plan"></span>Thème</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 13:35</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 13:40</div></div></div>
   </div></nav>
   <div class="wrap">
     <div id="banner"></div>
@@ -1205,7 +1205,6 @@ $('#nImport').onclick=lemonPick;
 $('#nExport').onclick=exportDialog;
 $('#nLib').onclick=()=>drawerOpen();
 $('#nShare').onclick=shareDialog;
-$('#nTheme').onclick=themeDialog;
 document.addEventListener('dragover',e=>{if([...(e.dataTransfer.items||[])].some(x=>x.kind==='file'))e.preventDefault();});
 document.addEventListener('drop',e=>{const all=[...(e.dataTransfer.files||[])];const f=all.filter(x=>/\.pdf$/i.test(x.name)),j=all.filter(x=>/\.json$/i.test(x.name));if(f.length||j.length)e.preventDefault();if(f.length)lemonImport(f);if(j.length)libOpenFile(j);});
 document.addEventListener('keydown',e=>{if(document.querySelector('.ov')||e.target.closest('[contenteditable],input,select,textarea'))return;
