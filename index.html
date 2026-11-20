@@ -318,25 +318,50 @@ body.ro #itOut,body.ro #nGrille,body.ro .tools,body.ro .below,body.ro .nojour .b
 body.ro td.br,body.ro td.tm,body.ro .pb,body.ro .hwitem .bb{pointer-events:none}
 body.ro .tg button[data-tip*="PDF"]{border-radius:10px}
 .thpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;width:100%}.thb{display:flex;align-items:center;gap:8px;border:2px solid transparent;background:#f3f3ee;border-radius:8px;padding:6px 8px;cursor:pointer;font-size:14px;text-align:left}.thb.on{border-color:#329ae3;background:#fff}.thsw{width:30px;height:30px;border-radius:6px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+
+/* ---------- en-tête sur une ligne ---------- */
+.hdr{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:6px 2.25%;background:rgba(0,0,0,.10);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.hdr .hl{display:flex;justify-content:flex-start;min-width:0}
+.hdr .hrt{display:flex;justify-content:flex-end;min-width:0}
+.hdr .topnav{position:static;justify-content:flex-start}
+.hdr .topnav .bar{border-radius:10px}
+.hdr .topnav .it:first-child>button{border-radius:10px 0 0 10px}.hdr .topnav .it:last-child>button{border-radius:0 10px 10px 0}
+.hdr .topnav .dd{border-radius:0 0 8px 8px}
+.hdr .navctl{margin:0;gap:10px}
+.hdr .navside{width:auto}.hdr .navside .bp{width:auto;padding:6px 16px;margin:0}
+.hdr .navmain{width:auto;margin:0}
+.hdr .navmain .h{display:none}
+.hdr .navmain .c{border-radius:15px;padding:6px 48px 6px 20px;font-size:17px;white-space:nowrap;box-shadow:none}
+.hdr .pick{right:5px;top:50%;bottom:auto;transform:translateY(-50%);width:32px;height:32px;box-shadow:none;background:#f1f1ec}
+.hdr .cal{left:50%;top:calc(100% + 6px);transform:translateX(-50%)}
+.hdr .toolbar{position:static;margin:0;flex-wrap:wrap;justify-content:flex-end}
+.wrap{padding-top:14px}
+body.withdrawer .hdr{margin-right:390px}
+@media (max-width:1100px){.hdr{grid-template-columns:1fr;justify-items:center}.hdr .hl,.hdr .hrt{justify-content:center}}
 </style>
 <style id="pagestyle">@page{size:A4 portrait;margin:9mm 9mm 12mm}</style>
 </head>
 <body>
 <div id="app">
+  <header class="hdr" id="hdr">
+    <div class="hl">
   <nav class="topnav"><div class="bar">
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 13:40</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 13:50</div></div></div>
   </div></nav>
-  <div class="wrap">
-    <div id="banner"></div>
+    </div>
     <div class="navctl" id="navctl">
-      <div class="navside l"><button class="bp" id="prev"><span data-ic="left"></span><span id="prevLbl"></span></button></div>
+      <div class="navside l"><button class="bp" id="prev"><span data-ic="left"></span></button></div>
       <div class="navmain"><div class="h" id="navHead">Date</div><div class="c" id="dateLbl"></div>
         <button class="pick" id="pickBtn" title="Choisir une date"><span data-ic="calsmall"></span></button><div id="calBox"></div></div>
-      <div class="navside r"><button class="bp" id="next"><span id="nextLbl"></span><span data-ic="right"></span></button></div>
+      <div class="navside r"><button class="bp" id="next"><span data-ic="right"></span></button></div>
     </div>
+    <div class="hrt" id="hdrTools"></div>
+  </header>
+  <div class="wrap">
+    <div id="banner"></div>
     <div id="main"></div>
   </div>
   <div class="savestate" id="saveState"></div>
@@ -687,10 +712,11 @@ addEventListener('resize',()=>alignPills());
 function render(){setTimeout(alignPills,0);document.documentElement.dataset.th=db.settings.theme||'lemon';try{RTE.hide();}catch(e){}document.body.classList.remove('ts-small','ts-large','ts-xlarge');if(db.settings.textSize!=='normal')document.body.classList.add('ts-'+db.settings.textSize);
   document.body.classList.toggle('cut',!!db.settings.cut);
   const wk=view==='week'||view==='hw';$('#navHead').textContent='Date';
-  $('#dateLbl').textContent=wk?weekLabel(mondayOf(cur)):longDate(cur);
-  $('#prevLbl').textContent=wk?'Précédente':JOURS[wd(schoolStep(cur,-1))];
-  $('#nextLbl').textContent=wk?'Suivante':JOURS[wd(schoolStep(cur,1))];
-  drawCal();const m=$('#main');m.innerHTML='';m.append(view==='week'?renderWeek():view==='hw'?renderHw():renderDay(cur));showSave();}
+  $('#dateLbl').textContent=wk?hdrDate(mondayOf(cur)).replace(/^\S+ /,'').slice(0,5)+' – '+hdrDate(addDays(mondayOf(cur),4)).replace(/^\S+ /,''):hdrDate(cur);
+  $('#prev').title=wk?'Semaine précédente':'Jour précédent';$('#next').title=wk?'Semaine suivante':'Jour suivant';
+  drawCal();const m=$('#main');m.innerHTML='';m.append(view==='week'?renderWeek():view==='hw'?renderHw():renderDay(cur));placeTools();showSave();}
+function hdrDate(s){const d=parseIso(s);const j=JOURS[d.getDay()];return j.charAt(0).toUpperCase()+j.slice(1)+' '+String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();}
+function placeTools(){const slot=$('#hdrTools');if(!slot)return;slot.innerHTML='';const tb=$('#main .toolbar');if(!tb)return;const pl=tb.querySelector('#pdfLink'),tg=tb.querySelector('.tg');const box=el('div',{class:'toolbar'});if(pl)box.append(pl);if(tg)box.append(tg);slot.append(box);if(!tb.querySelector('*'))tb.remove();}
 function drawCal(){const box=$('#calBox');box.innerHTML='';if(!calOpen)return;if(!calMonth)calMonth=cur.slice(0,7);
   const[y,mo]=calMonth.split('-').map(Number);const first=new Date(y,mo-1,1);const start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
   const MS=['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
