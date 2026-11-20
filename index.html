@@ -317,6 +317,7 @@ html[data-th=marine]{--bg:linear-gradient(170deg,#2c4a7a 0%,#223b63 50%,#182c4d 
 body.ro #itOut,body.ro #nGrille,body.ro .tools,body.ro .below,body.ro .nojour .bp,body.ro .nojour .ou,body.ro .nojour p,body.ro .addb,body.ro .px,body.ro #saveState,body.ro .tg button:not([data-tip*="PDF"]),body.ro .hwh .addb{display:none!important}
 body.ro td.br,body.ro td.tm,body.ro .pb,body.ro .hwitem .bb{pointer-events:none}
 body.ro .tg button[data-tip*="PDF"]{border-radius:10px}
+.thpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;width:100%}.thb{display:flex;align-items:center;gap:8px;border:2px solid transparent;background:#f3f3ee;border-radius:8px;padding:6px 8px;cursor:pointer;font-size:14px;text-align:left}.thb.on{border-color:#329ae3;background:#fff}.thsw{width:30px;height:30px;border-radius:6px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
 </style>
 <style id="pagestyle">@page{size:A4 portrait;margin:9mm 9mm 12mm}</style>
 </head>
@@ -326,7 +327,7 @@ body.ro .tg button[data-tip*="PDF"]{border-radius:10px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 13:20</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nTheme"><span data-ic="plan"></span>Thème</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 13:35</div></div></div>
   </div></nav>
   <div class="wrap">
     <div id="banner"></div>
@@ -1137,11 +1138,11 @@ function settingsDialog(startTab){const S=db.settings;let tab=startTab||'general
       srow('Durée d\'une nouvelle plage (min)',el('input',{type:'number',class:'inp',style:'max-width:110px',min:5,step:5,value:S.newDur||50,onchange:e=>{S.newDur=Math.max(5,+e.target.value||50);save();}})),
       srow('Pas des durées',sel(S.step,[[5,'5 minutes'],[10,'10 minutes'],[15,'15 minutes']],v=>S.step=+v)),
       srow('Cycles du PER montrés',el('span',{},[1,2,3].map(n=>el('label',{style:'margin-right:12px'},el('input',{type:'checkbox',checked:S.cycles.includes(n),onchange:e=>{S.cycles=e.target.checked?[...new Set([...S.cycles,n])].sort():S.cycles.filter(x=>x!==n);save();}}),' '+n)))),
-      srow('Samedi et dimanche',el('label',{},chk(S.weekend,v=>S.weekend=v),' les montrer aussi')));}
+      srow('Samedi et dimanche',el('label',{},chk(S.weekend,v=>S.weekend=v),' les montrer aussi')),
+      srow('Thème',themePicker(()=>draw())));}
     if(tab==='journal'){p.append(el('h3',{},'Impression'),
       srow('Orientation du journal à l\'impression',sel(S.orient,[['portrait','Portrait'],['landscape','Paysage']],v=>S.orient=v)),
       srow('Saut de page à l\'impression',sel(S.cut?'1':'0',[['1','Couper au milieu des lignes'],['0','Préserver les lignes complètes']],v=>S.cut=v==='1')),
-      srow('Thème',sel(S.theme||'lemon',[['lemon','Lemon (vert-gris)'],['ardoise','Ardoise'],['lac','Lac'],['sable','Sable'],['foret','Forêt'],['lavande','Lavande'],['perle','Perle'],['ocean','Océan'],['corail','Corail'],['bordeaux','Bordeaux'],['marine','Marine']],v=>{S.theme=v;document.documentElement.dataset.th=v;})),
       srow('Taille des textes par défaut',sel(S.textSize,[['small','Petite'],['normal','Normale'],['large','Grande'],['xlarge','Très grande']],v=>S.textSize=v)),
       el('h3',{},'Colonnes'),
       srow('J\'utilise les objectifs du PER dans le journal',el('span',{},chk(S.cols.per.on,v=>S.cols.per.on=v))),
@@ -1204,6 +1205,7 @@ $('#nImport').onclick=lemonPick;
 $('#nExport').onclick=exportDialog;
 $('#nLib').onclick=()=>drawerOpen();
 $('#nShare').onclick=shareDialog;
+$('#nTheme').onclick=themeDialog;
 document.addEventListener('dragover',e=>{if([...(e.dataTransfer.items||[])].some(x=>x.kind==='file'))e.preventDefault();});
 document.addEventListener('drop',e=>{const all=[...(e.dataTransfer.files||[])];const f=all.filter(x=>/\.pdf$/i.test(x.name)),j=all.filter(x=>/\.json$/i.test(x.name));if(f.length||j.length)e.preventDefault();if(f.length)lemonImport(f);if(j.length)libOpenFile(j);});
 document.addEventListener('keydown',e=>{if(document.querySelector('.ov')||e.target.closest('[contenteditable],input,select,textarea'))return;
@@ -1585,6 +1587,9 @@ const Viewer=(()=>{let last=null,err='',busy=false;
     new MutationObserver(()=>{document.querySelectorAll('[contenteditable="true"]').forEach(x=>x.setAttribute('contenteditable','false'));}).observe(document.body,{subtree:true,childList:true});
     document.addEventListener('click',e=>{if(e.target.closest('td.br,td.tm,.pb,.hwitem,.hwi,.wday .it'))return;},true);}
   return{init};})();
+const THEMES=[['lemon','Lemon','linear-gradient(170deg,#8ea89c,#6c8a84)'],['ardoise','Ardoise','linear-gradient(170deg,#3a4150,#22262f)'],['lac','Lac','linear-gradient(170deg,#8fb5d3,#557fa6)'],['sable','Sable','linear-gradient(170deg,#e6d6bb,#c9b089)'],['foret','Forêt','linear-gradient(170deg,#4f7d60,#2c4f3a)'],['lavande','Lavande','linear-gradient(170deg,#b6a9d6,#8374b0)'],['perle','Perle','linear-gradient(170deg,#e3e5e8,#c3c7ce)'],['ocean','Océan','linear-gradient(170deg,#5fb3b3,#2b7f88)'],['corail','Corail','linear-gradient(170deg,#f6b8a0,#e07d6a)'],['bordeaux','Bordeaux','linear-gradient(170deg,#8a3b4a,#552530)'],['marine','Marine','linear-gradient(170deg,#2c4a7a,#182c4d)']];
+function themePicker(after){const cur=db.settings.theme||'lemon';return el('div',{class:'thpick'},THEMES.map(([k,n,g])=>el('button',{type:'button',class:'thb'+(k===cur?' on':''),onclick:()=>{db.settings.theme=k;document.documentElement.dataset.th=k;save();render();after&&after();}},el('span',{class:'thsw',style:'background:'+g}),n)));}
+function themeDialog(){const body=el('div');const draw=()=>{body.innerHTML='';body.append(themePicker(draw));};draw();dialog('Thème',body,[['Fermer','ok',c=>c()]],{width:560});}
 function shareDialog(){const body=el('div');const st=()=>{try{return JSON.parse(localStorage.getItem('journal-share')||'{}');}catch(e){return{};}};const put=o=>{try{localStorage.setItem('journal-share',JSON.stringify(o));}catch(e){}};
   const draw=()=>{body.innerHTML='';const s=st();
     if(!Sync.on()){body.append(el('p',{},'Le partage passe par ta Dropbox : connecte d\'abord la synchro (Outils ▾ → Sauvegarde → Synchro en ligne avec Dropbox).'));return;}
