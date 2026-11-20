@@ -351,7 +351,7 @@ body.withdrawer .hdr{margin-right:390px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:25</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:30</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
@@ -1004,15 +1004,15 @@ async function makeHwPdf(mon){const {PDFDocument,StandardFonts,rgb}=PDFLib;const
   const a=parseIso(mon),b=parseIso(addDays(mon,4));const L1='Devoirs | ';
   const cap=s=>s[0].toUpperCase()+s.slice(1);const D1=cap(JOURS[1])+' '+a.getDate()+' '+MOIS[a.getMonth()]+' '+a.getFullYear(),D2=cap(JOURS[5])+' '+b.getDate()+' '+MOIS[b.getMonth()]+' '+b.getFullYear();
   let x=M;txt(L1,x,M,13.5,F);x+=W(L1,F,13.5);txt(D1,x,M,13.5,FB);x+=W(D1,FB,13.5);txt(' au ',x,M,13.5,F);x+=W(' au ',F,13.5);txt(D2,x,M,13.5,FB);
-  const top=M+13.5*1.2+10,G=12,colW=(PW-2*M-G)/2,lh=13*1.25;
-  const content=k=>{const out=[];if(k==='r'){wrap(h.remarques,colW-8,13).forEach(l=>out.push({l}));return out;}
-    for(const it of h.days[k]){const br=branch(it.branch);out.push({br,sub:it.sub});wrap(it.text,colW-14,13).forEach(l=>out.push({l,ind:true}));out.push({gap:true});}return out;};
-  const heightOf=c=>c.reduce((s,r)=>s+(r.br?21:r.gap?6:r.l.h+r.l.gap),0);
+  const top=M+13.5*1.2+10,G=12,colW=(PW-2*M-G)/2,lh=15*1.25;
+  const content=k=>{const out=[];if(k==='r'){wrap(h.remarques,colW-8,15).forEach(l=>out.push({l}));return out;}
+    for(const it of h.days[k]){const br=branch(it.branch);out.push({br,sub:it.sub});wrap(it.text,colW-14,15).forEach(l=>out.push({l,ind:true}));out.push({gap:true});}return out;};
+  const heightOf=c=>c.reduce((s,r)=>s+(r.br?24:r.gap?7:r.l.h+r.l.gap),0);
   const rows=[[1,4],[2,5],[3,'r']];const avail=PH-top-30;const minH=avail/3;let y=top;
-  for(const [l,r] of rows){const cl=content(l),cr=content(r);const hRow=Math.max(minH,24+Math.max(heightOf(cl),heightOf(cr))+6);
-    [[l,cl,M],[r,cr,M+colW+G]].forEach(([k,c,cx])=>{rr(cx,y,colW,18,'#f1f1f1','#b9b9b9');txt(k==='r'?'REMARQUES':JOURS[k].toUpperCase(),cx+6,y+4.6,10,FB,'#222222');
-      let yy=y+25;for(const r of c){if(r.br){const lab=r.br.name+(r.sub?' · '+r.sub:'');const wl=W(lab,FB,11)+12;rr(cx+2,yy,wl,17,r.br.color);txt(lab,cx+8,yy+3.4,11,FB,'#ffffff');yy+=21;}
-        else if(r.gap)yy+=6;else{Rich.draw([r.l],cx+(r.ind?12:5),yy,r.l.wd,W,txt,box,ln);yy+=r.l.h+r.l.gap;}}});
+  for(const [l,r] of rows){const cl=content(l),cr=content(r);const hRow=Math.max(minH,27+Math.max(heightOf(cl),heightOf(cr))+6);
+    [[l,cl,M],[r,cr,M+colW+G]].forEach(([k,c,cx])=>{rr(cx,y,colW,20,'#f1f1f1','#b9b9b9');txt(k==='r'?'REMARQUES':JOURS[k].toUpperCase(),cx+6,y+5,11,FB,'#222222');
+      let yy=y+27;for(const r of c){if(r.br){const lab=r.br.name+(r.sub?' · '+r.sub:'');const wl=W(lab,FB,12.5)+12;rr(cx+2,yy,wl,19,r.br.color);txt(lab,cx+8,yy+3.8,12.5,FB,'#ffffff');yy+=24;}
+        else if(r.gap)yy+=7;else{Rich.draw([r.l],cx+(r.ind?12:5),yy,r.l.wd,W,txt,box,ln);yy+=r.l.h+r.l.gap;}}});
     y+=hRow;}
   pages.forEach((p,i)=>{const t=(i+1)+'/'+pages.length;p.drawText(t,{x:(PW-F.widthOfTextAtSize(t,8))/2,y:16,size:8,font:F});});
   return {bytes:await doc.save(),name};}
