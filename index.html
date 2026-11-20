@@ -237,7 +237,7 @@ table.brt td:last-child{white-space:nowrap;text-align:right}
 }
 .pj{font:9.5pt/1.25 Helvetica,Arial,sans-serif;color:#000;break-after:page;page-break-after:always}
 .pj:last-child{break-after:auto;page-break-after:auto}
-.pj .ptitle{font-size:13.5pt;margin:0 0 8pt}
+.pj .ptitle{font-size:10.8pt;margin:0 0 8pt}
 .pj table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:3pt 2.2pt;margin:0 -3pt}
 .pj .ql{border:.6pt solid #b9b9b9;background:#f1f1f1;border-radius:2.5pt;font-size:6.6pt;text-transform:uppercase;padding:1.5pt 4pt;color:#222;white-space:nowrap;overflow:hidden}
 .pj .ql.c{text-align:center}
@@ -350,7 +350,7 @@ body.withdrawer .hdr{margin-right:390px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:00</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:05</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
@@ -576,7 +576,7 @@ const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+Stri
 const parseIso=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
 const addDays=(s,n)=>{const d=parseIso(s);d.setDate(d.getDate()+n);return iso(d);};
 const longDate=s=>{const d=parseIso(s);return JOURS[d.getDay()]+', '+d.getDate()+' '+MOIS[d.getMonth()]+' '+d.getFullYear();};
-const printDate=s=>{const d=parseIso(s);return JOURS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()]+' '+d.getFullYear();};
+const printDate=s=>{const d=parseIso(s);const j=JOURS[d.getDay()];return j.charAt(0).toUpperCase()+j.slice(1)+' '+d.getDate()+' '+MOIS[d.getMonth()]+' '+d.getFullYear();};
 const wd=s=>parseIso(s).getDay();
 const schoolStep=(s,dir)=>{let t=addDays(s,dir);while(!db.settings.weekend&&(wd(t)===0||wd(t)===6))t=addDays(t,dir);return t;};
 const toMin=h=>{const[a,b]=String(h).split(':').map(Number);return a*60+(b||0);};
@@ -1112,7 +1112,7 @@ async function makePdf(list){
   const heads=['Horaire','Discipline'];if(c.deroul.on)heads.push(c.deroul.label);if(c.obj.on)heads.push(c.obj.label);for(const x of db.settings.extra)heads.push(x.label);if(c.per.on)heads.push('PER');if(c.ft.on)heads.push('Forme et temps');
   const label=(t,x,yy,w,center)=>{rr(x,yy,w,11,'#f1f1f1','#b9b9b9');let s=safe(t.toUpperCase(),F);while(s.length>1&&W(s,F,6.6)>w-6)s=s.slice(0,-1);txt(s,center?x+(w-W(s,F,6.6))/2:x+4,yy+2.6,6.6,F,'#222222');};
   for(const s of days){newPage();const day=db.days[s];
-    txt('Journal de '+(db.settings.name||'')+' | ',M,y,13.5,F);txt(printDate(s),M+W('Journal de '+(db.settings.name||'')+' | ',F,13.5),y,13.5,FB);y+=13.5*1.2+8;
+    txt('Journal de '+(db.settings.name||'')+' | ',M,y,10.8,F);txt(printDate(s),M+W('Journal de '+(db.settings.name||'')+' | ',F,10.8),y,10.8,FB);y+=10.8*1.2+8;
     const half=(PW-2*M-G)/2;label('Absences',M,y,half);label('Remarques',M+half+G,y,half);y+=11+G;
     const la=layout(day.absences,half-8,9.5),lr=layout(day.remarques,half-8,9.5);const hb=Math.max(32,hLines(la)+6,hLines(lr)+6);
     rr(M,y,half,hb,'#ffffff','#b9b9b9');rr(M+half+G,y,half,hb,'#ffffff','#b9b9b9');drawLines(la,M+4,y+3,9.5,half-8);drawLines(lr,M+half+G+4,y+3,9.5,half-8);y+=hb+G;
