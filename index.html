@@ -351,7 +351,7 @@ body.withdrawer .hdr{margin-right:390px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:40</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:50</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
@@ -1005,16 +1005,20 @@ async function makeHwPdf(mon){const {PDFDocument,StandardFonts,rgb}=PDFLib;const
   const cap=s=>s[0].toUpperCase()+s.slice(1);const D1=cap(JOURS[1])+' '+a.getDate()+' '+MOIS[a.getMonth()]+' '+a.getFullYear(),D2=cap(JOURS[5])+' '+b.getDate()+' '+MOIS[b.getMonth()]+' '+b.getFullYear();
   let x=M;txt(L1,x,M,13.5,F);x+=W(L1,F,13.5);txt(D1,x,M,13.5,FB);x+=W(D1,FB,13.5);txt(' au ',x,M,13.5,F);x+=W(' au ',F,13.5);txt(D2,x,M,13.5,FB);
   const top=M+13.5*1.2+10,G=12,colW=(PW-2*M-G)/2,lh=15*1.25;
-  const labOf=it=>{const br=branch(it.branch);return {br,lab:br.name+(it.sub?' · '+it.sub:'')};};
+  const allIt=[1,2,3,4,5].flatMap(k=>h.days[k]||[]);
+  const LW=Math.min(130,Math.max(84,...allIt.map(it=>Math.max(W(branch(it.branch).name,FB,11.5),W(it.sub||'',F,9))+14)));
+  const fitSz=(t,f,sz,w)=>{while(sz>6&&W(t,f,sz)>w)sz-=.5;return sz;};
   const content=k=>{const out=[];if(k==='r'){wrap(h.remarques,colW-8,15).forEach(l=>out.push({l}));return out;}
-    for(const it of h.days[k]){const {br,lab}=labOf(it);const wl=W(lab,FB,12.5)+12;const tx=wl+8;out.push({br,lab,wl,tx,lines:wrap(it.text,colW-tx-6,15)});out.push({gap:true});}return out;};
-  const itemH=r=>Math.max(19,r.lines.reduce((t,l)=>t+l.h+l.gap,0));
-  const heightOf=c=>c.reduce((s,r)=>s+(r.br?itemH(r):r.gap?7:r.l.h+r.l.gap),0);
+    for(const it of h.days[k]){const br=branch(it.branch);const lines=wrap(it.text,colW-LW-4-10,15);const th=lines.reduce((t,l)=>t+l.h+l.gap,0)+13;
+      out.push({br,sub:it.sub||'',lines,ih:Math.max(it.sub?36:28,th)});out.push({gap:true});}return out;};
+  const heightOf=c=>c.reduce((s,r)=>s+(r.br?r.ih:r.gap?6:r.l.h+r.l.gap),0);
   const rows=[[1,4],[2,5],[3,'r']];const avail=PH-top-30;const minH=avail/3;let y=top;
   for(const [l,r] of rows){const cl=content(l),cr=content(r);const hRow=Math.max(minH,27+Math.max(heightOf(cl),heightOf(cr))+6);
     [[l,cl,M],[r,cr,M+colW+G]].forEach(([k,c,cx])=>{rr(cx,y,colW,20,'#f1f1f1','#b9b9b9');txt(k==='r'?'REMARQUES':JOURS[k].toUpperCase(),cx+6,y+5,11,FB,'#222222');
-      let yy=y+27;for(const r of c){if(r.br){rr(cx+2,yy,r.wl,19,r.br.color);txt(r.lab,cx+8,yy+3.8,12.5,FB,'#ffffff');let ly=yy+1;for(const l of r.lines){Rich.draw([l],cx+2+r.tx,ly,l.wd,W,txt,box,ln);ly+=l.h+l.gap;}yy+=itemH(r);}
-        else if(r.gap)yy+=7;else{Rich.draw([r.l],cx+5,yy,r.l.wd,W,txt,box,ln);yy+=r.l.h+r.l.gap;}}});
+      let yy=y+27;for(const r of c){if(r.br){const ih=r.ih;rr(cx,yy,LW,ih,r.br.color);const ns=fitSz(r.br.name,FB,11.5,LW-8),ss=fitSz(r.sub,F,9,LW-8);const bh=ns+(r.sub?ss+3:0);let ty=yy+(ih-bh)/2;
+          txt(r.br.name,cx+(LW-W(r.br.name,FB,ns))/2,ty,ns,FB,'#ffffff');if(r.sub)txt(r.sub,cx+(LW-W(r.sub,F,ss))/2,ty+ns+3,ss,F,'#ffffff');
+          const bx=cx+LW+4,bw=colW-LW-4;rr(bx,yy,bw,ih,null,'#c8c8c8');let ly=yy+(ih-r.lines.reduce((t,l)=>t+l.h+l.gap,0))/2+1.5;for(const l of r.lines){Rich.draw([l],bx+6,ly,l.wd,W,txt,box,ln);ly+=l.h+l.gap;}yy+=ih;}
+        else if(r.gap)yy+=6;else{Rich.draw([r.l],cx+5,yy,r.l.wd,W,txt,box,ln);yy+=r.l.h+r.l.gap;}}});
     y+=hRow;}
   pages.forEach((p,i)=>{const t=(i+1)+'/'+pages.length;p.drawText(t,{x:(PW-F.widthOfTextAtSize(t,8))/2,y:16,size:8,font:F});});
   return {bytes:await doc.save(),name};}
