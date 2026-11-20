@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html spellcheck="false" lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -350,7 +350,7 @@ body.withdrawer .hdr{margin-right:390px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 13:55</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:00</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
@@ -792,7 +792,7 @@ function renderDay(s){const day=getDay(s,false);const frag=el('div');
       el('div',{class:'right',style:'margin-top:6px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap'},db.rowClip&&el('button',{class:'bp g',title:rowClipTitle(),onclick:()=>pasteRow(day,day.items.length)},ic('paste',20),' Coller la ligne'),el('button',{class:'bp g',onclick:()=>{const it=P((db.settings.branches[0]||{}).id,db.settings.newDur||50);day.items.push(it);save();render();editPlage(day,it,true);}},ic('add',20),' Plage')))));
   return frag;}
 let dragFrom=null;
-function edit(obj,key,tag){const e=el(tag||'div',{class:'cell',contenteditable:'true',html:clean(obj[key])});
+function edit(obj,key,tag){const e=el(tag||'div',{class:'cell',contenteditable:'true',spellcheck:'false',html:clean(obj[key])});
   e.addEventListener('input',()=>{obj[key]=(e.textContent.trim()||e.querySelector('li'))?clean(e.innerHTML):'';save();});
   e.addEventListener('paste',ev=>{ev.preventDefault();const cd=ev.clipboardData||window.clipboardData;const h=cd.getData('text/html');if(h)document.execCommand('insertHTML',false,clean(h));else document.execCommand('insertText',false,cd.getData('text/plain'));});
   return e;}
@@ -1662,6 +1662,7 @@ function trashDialog(){const body=el('div');let close=null;
     body.append(list,el('div',{style:'margin-top:10px;text-align:right'},el('button',{class:'btn del',onclick:()=>ask('Vider la corbeille ? Tout ce qu\'elle contient sera irrécupérable.','Vider',()=>{db.trash=[];save();trashDialog();})},'Vider la corbeille')));};
   draw();dialog('Corbeille',body,[['Fermer','ok',c=>c()]],{width:600});close=()=>{const o=document.querySelector('.ov');if(o)o.remove();};}
 
+document.documentElement.spellcheck=false;document.body.spellcheck=false;new MutationObserver(()=>{document.querySelectorAll('[contenteditable],textarea,input[type=text],input:not([type])').forEach(x=>{if(x.spellcheck!==false)x.spellcheck=false;});}).observe(document.body,{subtree:true,childList:true});
 if(trashPurge())dedupeBranches.did=true;
 if(dedupeBranches.did){try{localStorage.setItem(KEY,JSON.stringify(db));}catch(e){}}
 if(RO){render();Viewer.init();}else{render();fileInit();Sync.init();}
