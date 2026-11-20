@@ -351,7 +351,7 @@ body.withdrawer .hdr{margin-right:390px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="bin"></span>Corbeille</button><button id="nShare"><span data-ic="eye"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 17:50</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="bin"></span>Corbeille</button><button id="nShare"><span data-ic="eye"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 20:20</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
@@ -588,7 +588,7 @@ const clean=html=>{const t=document.createElement('template');t.innerHTML=html||
       const st=c.style;const keep=[];if(st)for(const k of okSt){const v=st.getPropertyValue(k);if(v&&!/url\(|expression/i.test(v))keep.push(k+':'+v);}
       const href=c.tagName==='A'?c.getAttribute('href'):null;const fs=c.tagName==='FONT'?[c.getAttribute('size'),c.getAttribute('color')]:null;
       for(const at of [...c.attributes])c.removeAttribute(at.name);
-      if(keep.length)c.setAttribute('style',keep.join(';'));if(href&&/^(https?:|mailto:)/i.test(href)){c.setAttribute('href',href);c.setAttribute('target','_blank');}
+      if(keep.length)c.setAttribute('style',keep.join(';'));if(href&&/^(https?:|mailto:|file:)/i.test(href)){c.setAttribute('href',href);c.setAttribute('target','_blank');}
       if(fs){if(/^[1-7]$/.test(fs[0]||''))c.setAttribute('size',fs[0]);if(/^#?[0-9a-z]+$/i.test(fs[1]||''))c.setAttribute('color',fs[1]);}
       walk(c);}else if(c.nodeType!==3)c.remove();}};walk(t.content);return t.innerHTML;};
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200);}
