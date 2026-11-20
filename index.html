@@ -180,6 +180,7 @@ td.br:hover .tools,.pb:hover .tools,.tools.open{display:flex}
 .bdrop{width:30px;height:30px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:12px;box-shadow:var(--sh)}
 .blist{position:absolute;left:-10px;top:100%;right:30px;max-height:260px;overflow:auto;background:#fff;box-shadow:0 4px 14px #0004;z-index:5;border-radius:3px}
 .blist button{display:block;width:100%;border:0;color:#fff;text-align:left;padding:6px 10px;font-size:.95em}
+.bselect:has(.inl){flex-wrap:wrap}.blist.inl{position:static;flex-basis:100%;max-height:min(60vh,480px);margin-top:4px;box-shadow:0 2px 8px #0003}
 .blist button.ps{background:#dcdccf;color:#888}
 .dur{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0}
 .dur .m{border:0;background:none;font-size:30px;color:#999;width:36px;line-height:1}
@@ -350,7 +351,7 @@ body.withdrawer .hdr{margin-right:390px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:05</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="trash"></span>Corbeille</button><button id="nShare"><span data-ic="per"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 14:10</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
@@ -931,7 +932,7 @@ function hwEdit(mon,k,it){const isNew=!it;const tmp=it?{branch:it.branch,sub:it.
   const top=el('div');const sub=el('input',{class:'inp',value:tmp.sub,placeholder:'Orthographe, géométrie, ...'});
   const draw=()=>{top.innerHTML='';const cb=branch(tmp.branch);
     const sel=el('div',{class:'bselect'},el('div',{class:'bcur',style:'background:'+cb.color},cb.name),el('button',{class:'bdrop',onclick:()=>{open=!open;draw();}},'▼'));
-    if(open)sel.append(el('div',{class:'blist'},db.settings.branches.map(b=>el('button',{style:'background:'+b.color,onclick:()=>{tmp.branch=b.id;open=false;draw();}},(b.id===tmp.branch?'✓ ':'')+b.name))));
+    if(open)sel.append(el('div',{class:'blist inl'},db.settings.branches.map(b=>el('button',{style:'background:'+b.color,onclick:()=>{tmp.branch=b.id;open=false;draw();}},(b.id===tmp.branch?'✓ ':'')+b.name))));
     top.append(el('div',{class:'field'},el('label',{},'Branche'),sel),el('div',{class:'field'},el('label',{},'Sous-titre'),sub));};draw();
   dialog(isNew?'Nouveau devoir':'Éditer le devoir',top,[['Annuler','no',c=>c()],['Valider','ok',c=>{const h=hwWeek(mon,true);
     if(isNew)h.days[k].push({id:uid(),branch:tmp.branch,sub:sub.value.trim(),text:''});else Object.assign(it,{branch:tmp.branch,sub:sub.value.trim()});save();render();c();}]],{width:560});}
