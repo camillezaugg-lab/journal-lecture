@@ -339,7 +339,20 @@ body.ro .tg button[data-tip*="PDF"]{border-radius:10px}
 .wrap{padding-top:14px}
 body.withdrawer .hdr{margin-right:390px}
 @media (max-width:1100px){.hdr{grid-template-columns:1fr;justify-items:center}.hdr .hl,.hdr .hrt{justify-content:center}}
-@media (max-width:1500px){body.withdrawer .hdr{grid-template-columns:1fr;justify-items:center;row-gap:8px}body.withdrawer .hdr .hl,body.withdrawer .hdr .hrt{justify-content:center}}
+/* panneau ouvert : on resserre pour tout garder sur une ligne */
+body.withdrawer .hdr{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-left:10px;padding-right:calc(390px + 8px)}
+body.withdrawer .hdr .hl,body.withdrawer .hdr .hrt{flex:0 0 auto}
+body.withdrawer .hdr .navctl{flex:0 1 auto}
+body.withdrawer .hdr .navctl{gap:6px}
+body.withdrawer .hdr .tg button{width:40px;padding:9px 7px}
+body.withdrawer .hdr .topnav .it>button{padding:0 12px;font-size:15px;gap:6px}
+body.withdrawer .hdr .topnav .it>button svg{width:19px;height:19px}
+body.withdrawer .hdr .navside .bp{padding:6px 9px}
+body.withdrawer .hdr .navmain .c{padding:6px 28px 6px 12px;font-size:15px}
+body.withdrawer .hdr .pick{width:26px;height:26px}
+body.withdrawer .hdr .toolbar{gap:4px}
+/* en dernier recours seulement, si vraiment trop étroit */
+@media (max-width:1150px){body.withdrawer .hdr{grid-template-columns:1fr;justify-items:center;row-gap:8px}body.withdrawer .hdr .hl,body.withdrawer .hdr .hrt{justify-content:center}}
 .trl{display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow:auto}.trr{display:flex;align-items:center;gap:8px;background:#f5f5f0;border-radius:6px;padding:7px 10px}.trt{flex:1;min-width:0}.trt .muted{font-size:12px}
 </style>
 <style id="pagestyle">@page{size:A4 portrait;margin:9mm 9mm 12mm}</style>
@@ -352,7 +365,7 @@ body.withdrawer .hdr{margin-right:390px}
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="bin"></span>Corbeille</button><button id="nShare"><span data-ic="eye"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 20:40</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="bin"></span>Corbeille</button><button id="nShare"><span data-ic="eye"></span>Partager en lecture</button><div class="ver">Version du 20.11.2026, 20:44</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
