@@ -261,14 +261,17 @@ body.cut .pj tr{break-inside:auto;page-break-inside:auto}
 .btn.ok{background:var(--green)} .btn.no{background:var(--orange)} .btn.del{background:var(--red)} .btn.sec{background:#e6e6de;color:#333} .btn.blue{background:var(--blue)} .btn.dark{background:var(--nav);border-radius:5px}
 
 /* barre de mise en forme */
-.rte{position:fixed;z-index:60;display:none;align-items:center;gap:6px;background:#2c303c;border-radius:12px;padding:6px 8px;box-shadow:0 4px 14px rgba(0,0,0,.3);max-width:calc(100vw - 16px);flex-wrap:wrap}
-.rte .rg{display:flex;align-items:center;background:#262a35;border-radius:6px;padding:0 2px}
-.rte .rb{height:38px;min-width:38px;padding:0 6px;border:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;gap:2px;border-radius:4px;cursor:pointer;position:relative;font-size:15px}
+body{padding-left:60px}
+.rte{position:fixed;left:6px;top:50%;transform:translateY(-50%);z-index:60;display:none;flex-direction:column;align-items:center;gap:5px;background:rgba(44,48,60,.96);border-radius:14px;padding:7px 6px;box-shadow:0 4px 16px rgba(0,0,0,.4);max-height:calc(100vh - 16px);overflow-y:auto;overflow-x:visible}
+.rte.on{display:flex}
+.rte .rg{display:flex;flex-direction:column;align-items:center;background:#262a35;border-radius:7px;padding:2px 0}
+.rte .rb{height:36px;min-width:40px;width:40px;padding:0;border:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;gap:2px;border-radius:5px;cursor:pointer;position:relative;font-size:15px}
 .rte .rb:hover{background:#ffffff1c}.rte .rb.on{background:#5b606c}.rte .rb.off{opacity:.45}
-.rte .rb .car{font-size:9px;opacity:.6}.rte .rb.size{min-width:96px;justify-content:space-between;padding:0 10px}
-.rte .rsep{width:1px;height:24px;background:#5b606c;margin:0 3px}
-.rte .rb.cls{min-width:44px}
-.rtepop{position:absolute;top:calc(100% + 4px);background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.3);padding:6px;z-index:61;color:#000}
+.rte .rb .car{font-size:8px;opacity:.6;position:absolute;right:3px;bottom:3px}
+.rte .rb.size{flex-direction:column;gap:0;font-size:12px;font-weight:700}.rte .rb.size .car{position:static}
+.rte .rsep{height:1px;width:22px;background:#5b606c;margin:1px 0}
+.rte .rb.cls{min-width:40px}
+.rtepop{position:absolute;left:calc(100% + 8px);top:0;background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.3);padding:6px;z-index:61;color:#000}
 .rtepop .szi{display:block;width:100%;text-align:left;border:0;background:none;padding:5px 12px;border-radius:4px;white-space:nowrap;cursor:pointer}.rtepop .szi:hover{background:#eee}
 .rtepop .sws{display:grid;grid-template-columns:repeat(7,24px);gap:5px}
 .rtepop .swb{width:24px;height:24px;border-radius:4px;border:1px solid #ccc;cursor:pointer;padding:0}
@@ -354,7 +357,7 @@ body.withdrawer .hdr .hl,body.withdrawer .hdr .hrt,body.withdrawer .hdr .navctl{
     <div class="it on" id="itPlan"><button><span data-ic="plan"></span>Planifier<span class="car">▼</span></button><div class="dd">
       <button id="nGrille"><span data-ic="grid"></span>Grille horaire</button><button id="nWeek"><span data-ic="cal"></span>Plan de semaine</button><button id="nHw"><span data-ic="log"></span>Devoirs</button><button id="nJournal"><span data-ic="log"></span>Journal</button></div></div>
     <div class="it" id="itOut"><button><span data-ic="tools"></span>Outils<span class="car">▼</span></button><div class="dd">
-      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="bin"></span>Corbeille</button><button id="nShare"><span data-ic="eye"></span>Partager en lecture</button><div class="ver">Version du 21.11.2026, 04:15</div></div></div>
+      <button id="nPer"><span data-ic="per"></span>Ouvrir le PER</button><button id="nSettings"><span data-ic="tools"></span>Paramètres</button><button id="nFile"><span data-ic="save"></span>Sauvegarde</button><button id="nImport"><span data-ic="log"></span>Importer des PDF Lemon</button><button id="nExport"><span data-ic="copy"></span>Exporter une matière</button><button id="nLib"><span data-ic="paste"></span>Leçons exportées</button><button id="nTrash"><span data-ic="bin"></span>Corbeille</button><button id="nShare"><span data-ic="eye"></span>Partager en lecture</button><div class="ver">Version du 21.11.2026, 05:52</div></div></div>
   </div></nav>
     </div>
     <div class="navctl" id="navctl">
@@ -716,7 +719,7 @@ let calOpen=false,calMonth=null;
 function fitCodes(){const all=[...document.querySelectorAll('.pcode')];let m=15;all.forEach(s=>{s.style.fontSize='';let f=15;while(s.scrollWidth>s.clientWidth+1&&f>8){f-=.5;s.style.fontSize=f+'px';}m=Math.min(m,f);});all.forEach(s=>s.style.fontSize=m<15?m+'px':'');}
 function alignPills(){fitCodes();const br=document.querySelector('td.br');if(!br)return;const x=br.getBoundingClientRect().left;document.querySelectorAll('.pb .tools').forEach(t=>{const pb=t.parentNode;t.style.left=(x-pb.getBoundingClientRect().left-26)+'px';});}
 addEventListener('resize',()=>alignPills());
-function render(){setTimeout(alignPills,0);document.documentElement.dataset.th=db.settings.theme||'lemon';try{RTE.hide();}catch(e){}document.body.classList.remove('ts-small','ts-large','ts-xlarge');if(db.settings.textSize!=='normal')document.body.classList.add('ts-'+db.settings.textSize);
+function render(){setTimeout(alignPills,0);document.documentElement.dataset.th=db.settings.theme||'lemon';try{RTE.ensure();}catch(e){}document.body.classList.remove('ts-small','ts-large','ts-xlarge');if(db.settings.textSize!=='normal')document.body.classList.add('ts-'+db.settings.textSize);
   document.body.classList.toggle('cut',!!db.settings.cut);
   const wk=view==='week'||view==='hw';$('#navHead').textContent='Date';
   $('#dateLbl').textContent=wk?hdrDate(mondayOf(cur)).replace(/^\S+ /,'').slice(0,5)+' – '+hdrDate(addDays(mondayOf(cur),4)).replace(/^\S+ /,''):hdrDate(cur);
@@ -1433,10 +1436,10 @@ const RTE=(()=>{let bar=null,cell=null,saved=null,pop=null;
   const keepSel=()=>{const s=getSelection();if(s.rangeCount&&cell&&cell.contains(s.anchorNode))saved=s.getRangeAt(0).cloneRange();};
   const restore=()=>{if(!cell)return;cell.focus();if(saved){const s=getSelection();s.removeAllRanges();s.addRange(saved);}};
   const changed=()=>{if(cell)cell.dispatchEvent(new Event('input'));state();};
-  const cmd=(c,v=null,css=false)=>{restore();try{document.execCommand('styleWithCSS',false,css);}catch(e){}document.execCommand(c,false,v);keepSel();changed();};
+  const cmd=(c,v=null,css=false)=>{if(!cell)return;restore();try{document.execCommand('styleWithCSS',false,css);}catch(e){}document.execCommand(c,false,v);keepSel();changed();};
   const closePop=()=>{if(pop){pop.remove();pop=null;}};
   const openPop=(btn,content)=>{const was=pop&&pop._b===btn;closePop();if(was)return;pop=el('div',{class:'rtepop'},content);pop._b=btn;pop.addEventListener('mousedown',e=>{if(!e.target.closest('input'))e.preventDefault();});
-    bar.append(pop);const r=btn.getBoundingClientRect(),br=bar.getBoundingClientRect();pop.style.left=Math.max(0,Math.min(r.left-br.left,br.width-pop.offsetWidth))+'px';};
+    bar.append(pop);const r=btn.getBoundingClientRect(),br=bar.getBoundingClientRect();pop.style.top=Math.max(0,Math.min(r.top-br.top,Math.max(0,bar.clientHeight-pop.offsetHeight)))+'px';};
   const B=(k,tip,fn,opt={})=>{const b=el('button',{type:'button',class:'rb'+(opt.cls?' '+opt.cls:''),'data-tip':tip,'data-k':k},sv(I[k]||'',opt.w||22),opt.caret&&el('span',{class:'car'},'▾'));
     b.addEventListener('mousedown',e=>e.preventDefault());b.addEventListener('click',e=>{e.preventDefault();fn(b);});return b;};
   const G=(...b)=>el('div',{class:'rg'},b);
@@ -1446,34 +1449,31 @@ const RTE=(()=>{let bar=null,cell=null,saved=null,pop=null;
       const url=/^(https?:|mailto:)/i.test(v)?v:'https://'+v;restore();if(saved&&saved.collapsed&&!a){document.execCommand('insertHTML',false,'<a href="'+url.replace(/"/g,'&quot;')+'">'+url.replace(/</g,'&lt;')+'</a>');}else document.execCommand('createLink',false,url);keepSel();changed();}]]);
     setTimeout(()=>{inp.focus();inp.select();},30);}
   function build(){bar=el('div',{class:'rte',id:'rte'});
-    const sizeBtn=el('button',{type:'button',class:'rb size','data-tip':'Taille du texte'},el('span',{},'Taille'),el('span',{class:'car'},'▾'));sizeBtn.addEventListener('mousedown',e=>e.preventDefault());
+    const sizeBtn=el('button',{type:'button',class:'rb size','data-tip':'Taille du texte'},el('span',{},'Aa'),el('span',{class:'car'},'▾'));sizeBtn.addEventListener('mousedown',e=>e.preventDefault());
     sizeBtn.addEventListener('click',()=>openPop(sizeBtn,[['Petit',2,'13px'],['Normal',3,'15px'],['Grand',4,'18px'],['Très grand',5,'24px']].map(([t,v,px])=>{const b=el('button',{type:'button',class:'szi',style:'font-size:'+px},t);b.onclick=()=>{closePop();cmd('fontSize',String(v),false);};return b;})));
     const colBtn=B('color','Couleur du texte',b=>openPop(b,el('div',{class:'sws'},COLS.map(c=>{const x=el('button',{type:'button',class:'swb',style:'background:'+c,title:c});x.onclick=()=>{closePop();cmd('foreColor',c,true);b.querySelector('.sw').setAttribute('fill',c);};return x;}))),{caret:1});
     const bgBtn=B('bg','Couleur de fond',b=>openPop(b,el('div',{class:'sws'},BGS.map(c=>{const x=el('button',{type:'button',class:'swb'+(c==='transparent'?' none':''),style:'background:'+c,title:c==='transparent'?'Aucune':c});x.onclick=()=>{closePop();cmd(document.queryCommandSupported&&document.queryCommandSupported('hiliteColor')?'hiliteColor':'backColor',c,true);if(c!=='transparent')b.querySelector('.sw').setAttribute('fill',c);};return x;}))),{caret:1});
     bar.append(G(B('undo','Annuler',()=>cmd('undo')),B('redo','Rétablir',()=>cmd('redo'))),
       G(B('bold','Gras (Ctrl+B)',()=>cmd('bold')),B('italic','Italique (Ctrl+I)',()=>cmd('italic')),B('under','Souligné (Ctrl+U)',()=>cmd('underline'))),
       G(B('ol','Liste numérotée',()=>cmd('insertOrderedList')),B('ul','Liste à puces',()=>cmd('insertUnorderedList')),el('span',{class:'rsep'}),B('outdent','Diminuer le retrait',()=>cmd('outdent')),B('indent','Augmenter le retrait',()=>cmd('indent'))),
-      G(B('left','Aligner à gauche',()=>cmd('justifyLeft')),B('center','Centrer',()=>cmd('justifyCenter')),B('right','Aligner à droite',()=>cmd('justifyRight')),B('just','Justifier',()=>cmd('justifyFull'))),
       G(B('link','Lien',linkDlg),B('unlink','Enlever le lien',()=>cmd('unlink'))),
       G(B('omega','Caractères spéciaux',b=>openPop(b,el('div',{class:'chars'},CHARS.map(ch=>{const x=el('button',{type:'button',class:'chb'},ch);x.onclick=()=>{closePop();cmd('insertText',ch);};return x;}))))),
-      G(sizeBtn),G(colBtn,bgBtn),G(B('close','Fermer',()=>{closePop();if(cell)cell.blur();hide();},{cls:'cls',w:24})));
+      G(sizeBtn),G(colBtn,bgBtn));
     document.body.append(bar);}
   function state(){if(!bar)return;const q=c=>{try{return document.queryCommandState(c);}catch(e){return false;}};
     const m={bold:'bold',italic:'italic',under:'underline',ol:'insertOrderedList',ul:'insertUnorderedList',left:'justifyLeft',center:'justifyCenter',right:'justifyRight',just:'justifyFull'};
     for(const[k,c]of Object.entries(m)){const b=bar.querySelector('[data-k="'+k+'"]');if(b)b.classList.toggle('on',q(c));}
     const lb=bar.querySelector('[data-k="unlink"]');if(lb){const s=getSelection();const n=s.anchorNode;lb.classList.toggle('off',!(n&&(n.nodeType===1?n:n.parentNode).closest&&(n.nodeType===1?n:n.parentNode).closest('a')));}}
-  function place(){if(!bar||!cell)return;if(!cell.isConnected){hide();return;}const r=cell.getBoundingClientRect();const h=bar.offsetHeight||56;const sheet=cell.closest('.journal,.sheet,.hwsheet,#main')||document.body;const sr=sheet.getBoundingClientRect();
-    const w=Math.min(bar.scrollWidth,innerWidth-16);let left=Math.max(8,Math.min(r.left,innerWidth-w-8));if(sr.width>w)left=Math.max(8,Math.min(Math.max(left,sr.left),sr.right-w));
-    let top=r.top-h-6;if(top<50)top=r.bottom+6;if(top+h>innerHeight-4)top=Math.max(50,innerHeight-h-4);bar.style.left=left+'px';bar.style.top=top+'px';}
-  function show(c){if(!bar)build();cell=c;bar.style.display='flex';place();state();}
-  function hide(){closePop();if(bar)bar.style.display='none';cell=null;saved=null;}
-  document.addEventListener('focusin',e=>{const c=e.target.closest&&e.target.closest('.cell[contenteditable]');if(c)show(c);else if(!(e.target.closest&&e.target.closest('#rte,.ov')))hide();});
-  document.addEventListener('focusout',e=>{setTimeout(()=>{const a=document.activeElement;if(document.querySelector('.ov'))return;if(!(a&&a.closest&&(a.closest('.cell[contenteditable]')||a.closest('#rte'))))hide();},0);});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cell&&!document.querySelector('.ov')){if(pop){closePop();return;}const c=cell;hide();c.blur();}});
+  function place(){}
+  function ensure(){if(!bar)build();bar.classList.add('on');}
+  function show(c){ensure();cell=c;state();}
+  function hide(){closePop();cell=null;saved=null;}  // garde la barre affichée (latérale), oublie juste la cellule
+  document.addEventListener('focusin',e=>{const c=e.target.closest&&e.target.closest('.cell[contenteditable]');if(c)show(c);});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cell&&!document.querySelector('.ov')){if(pop){closePop();return;}const c=cell;closePop();c.blur();}});
   document.addEventListener('selectionchange',()=>{if(cell){keepSel();state();}});
   addEventListener('scroll',place,true);addEventListener('resize',place);
   document.addEventListener('mousedown',e=>{if(pop&&!e.target.closest('.rtepop')&&!e.target.closest('#rte .rb'))closePop();});
-  return{hide};})();
+  return{hide,ensure};})();
 
 // ---------- synchro en ligne avec Dropbox (sans l'appli Dropbox : directement par internet) ----------
 const Sync=(()=>{const APP='0khs6znsx5hwdfk',PATH='/Claude/Ecole/Journal de classe/journal-sync.json',SK='journal-dbx';
